@@ -4,6 +4,7 @@ import com.fitness.userservice.dto.RegisterRequest;
 import com.fitness.userservice.dto.RegisterResponse;
 import com.fitness.userservice.models.User;
 import com.fitness.userservice.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class UsesServiceImpl implements UserService{
 
     @Autowired
@@ -24,10 +26,13 @@ public class UsesServiceImpl implements UserService{
     public RegisterResponse register(RegisterRequest userRequest) {
 
         if(userRepository.existsByEmail(userRequest.getEmail())){
-            throw new RuntimeException("User with given email already exists");
+            User existingUser=userRepository.findByEmail(userRequest.getEmail());
+            RegisterResponse registerResponse=modelmapper.map(existingUser,RegisterResponse.class);
+            return registerResponse;
         }
 
         User user=modelmapper.map(userRequest,User.class);
+        user.setId(null);
         User savedUser=userRepository.save(user);
         RegisterResponse registerResponse=modelmapper.map(savedUser,RegisterResponse.class);
         return registerResponse;
@@ -45,6 +50,6 @@ public class UsesServiceImpl implements UserService{
 
     @Override
     public Boolean validateUser(String userId) {
-        return userRepository.existsById(userId);
+        return userRepository.existsByKeycloakId(userId);
     }
 }

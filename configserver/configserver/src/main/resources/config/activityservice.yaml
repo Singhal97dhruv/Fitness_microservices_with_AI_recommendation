@@ -1,0 +1,29 @@
+server:
+  port: 9091
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: fitness_microservices
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      group-id: activity-processor-group
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+
+kafka:
+  topic:
+    name: activity-events
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka

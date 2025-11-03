@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: aiservice
+              uri: lb://AISERVICE
+              predicates:
+                - Path=/api/v1/recommendation/**
+
+            - id: userservice
+              uri: lb://USERSERVICE
+              predicates:
+               - Path=/api/v1/users/**
+
+            - id: activityservice
+              uri: lb://ACTIVITYSERVICE
+              predicates:
+                - Path=/api/v1/activity/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8282/realms/fitness-app/protocol/openid-connect/certs

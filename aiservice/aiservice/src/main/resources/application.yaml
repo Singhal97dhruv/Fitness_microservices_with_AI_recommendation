@@ -1,17 +1,5 @@
-server:
-  port: 9093
-
 spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017
-      database: fitness_ai_model
-
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+  application:
+    name: aiservice
+  config:
+    import: optional:configserver:http://localhost:8888

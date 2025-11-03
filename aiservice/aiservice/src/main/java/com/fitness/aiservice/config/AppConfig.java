@@ -1,6 +1,7 @@
 package com.fitness.aiservice.config;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
 
@@ -8,6 +9,7 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 @EnableMongoAuditing
 public class AppConfig {
 
+    @Bean
     public ModelMapper modelMapper(){return new ModelMapper();}
 
 }
