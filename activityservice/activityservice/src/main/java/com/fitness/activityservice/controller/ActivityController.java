@@ -31,6 +31,12 @@ public class ActivityController {
         return ResponseEntity.ok(activityService.getUserActivities(userId));
     }
 
+    @DeleteMapping("/activities/{activityId}")
+    public ResponseEntity<String> deleteActivity(@PathVariable String activityId){
+        activityService.deleteActivity(activityId);
+        return  ResponseEntity.accepted().body("Activity Deleted from Database");
+    }
+
 
 
 }

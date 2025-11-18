@@ -6,6 +6,7 @@ import com.fitness.activityservice.models.Activity;
 import com.fitness.activityservice.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,5 +81,12 @@ public class ActivityServiceimpl implements ActivityService{
         log.info("Activities received: {}",activities);
         List<ActivityResponse> activitiesResponse=activities.stream().map(activity -> modelMapper.map(activity, ActivityResponse.class)).toList();
         return activitiesResponse;
+    }
+
+    @Override
+    public void deleteActivity(String activityId) {
+
+        Activity activity=activityRepository.findById(activityId).orElseThrow(()->new ResourceNotFoundException("Activity with given activityId isn't present in Database: "+activityId));
+        activityRepository.delete(activity);
     }
 }
